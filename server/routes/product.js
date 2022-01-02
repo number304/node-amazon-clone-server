@@ -48,7 +48,9 @@ router.get("/product", async (req, res) => {
 // GET request - get one product
 router.get("/product/:id", async (req, res) => {
   try {
-    let product = await Product.findOne({ _id: req.params.id });
+    let product = await Product.findOne({ _id: req.params.id })
+      .populate("owner category")
+      .exec();
     res.json({
       success: true,
       product,
