@@ -28,11 +28,13 @@ const productRoutes = require("./routes/product");
 const categoryRoutes = require("./routes/category");
 const ownerRoutes = require("./routes/owner");
 const userRoutes = require("./routes/user");
+const authRoutes = require("./routes/auth");
 
 app.use("/api", productRoutes);
 app.use("/api", categoryRoutes);
 app.use("/api", ownerRoutes);
 app.use("/api", userRoutes);
+app.use("/api", authRoutes);
 
 app.listen(3000, (err) => {
   if (err) console.log(err);
