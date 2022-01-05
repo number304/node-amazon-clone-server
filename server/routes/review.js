@@ -5,7 +5,7 @@ const verifyToken = require("../middlewares/verify-token");
 const upload = require("../middlewares/upload-photo");
 
 router.post(
-  "/reviews/:productID",
+  "/review/:productID",
   [verifyToken, upload.single("photo")],
   async (req, res) => {
     try {
@@ -18,7 +18,10 @@ router.post(
       review.user = req.decoded._id;
       review.productID = req.params.productID;
 
-      await Product.update({ $push: review._id });
+      await Product.findOneAndUpdate(
+        { _id: review.productID },
+        { $push: { rating: review._id } }
+      );
 
       const savedReview = await review.save();
 
@@ -37,7 +40,7 @@ router.post(
   }
 );
 
-router.get("/reviews/:productID", async (req, res) => {
+router.get("/review/:productID", async (req, res) => {
   try {
     const productReviews = await Review.find({
       productID: req.params.productID,
