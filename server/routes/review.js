@@ -20,7 +20,7 @@ router.post(
 
       await Product.findOneAndUpdate(
         { _id: review.productID },
-        { $push: { rating: review._id } }
+        { $push: { reviews: review._id } }
       );
 
       const savedReview = await review.save();
