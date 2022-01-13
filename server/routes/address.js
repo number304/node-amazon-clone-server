@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const Address = require("../models/address");
-const User = require("../models/user")
+const User = require("../models/user");
 const verifyToken = require("../middlewares/verify-token");
 const axios = require("axios");
 
@@ -37,6 +37,26 @@ router.post("/address", verifyToken, async (req, res) => {
 router.get("/address", verifyToken, async (req, res) => {
   try {
     let address = await Address.find({ user: req.decoded._id });
+
+    res.json({
+      success: true,
+      address,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+});
+
+// GET one user address
+router.get("/address/:id", verifyToken, async (req, res) => {
+  try {
+    let address = await Address.findOne({
+      user: req.decoded._id,
+      _id: req.params.id,
+    });
 
     res.json({
       success: true,
